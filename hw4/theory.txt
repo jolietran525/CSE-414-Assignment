@@ -1,0 +1,56 @@
+﻿3a. R(A,B,C,D,E) with functional dependencies D → B, CE → A.
+
+We see that the closure {D}+ = {D, B}, which is neither {D} nor {A,B,C,D,E}.
+So using BCNF Decomposition on R(A,B,C,D,E), we get:
+_R1 = BD
+_R2 = (ABCDE - BD) ∪ D = ACDE
+R1 is now fine and D is the key. However, we still have a problem with R2.
+
+CE → A violates BCNF because: the closure {C,E}+ = {A,C,E}, which is neither {C,E} nor {A,C,D,E}
+So using BCNF Decomposition on R2(A,C,D,E), we get:
+_R3 = ACE
+_R4 = (ACDE - ACE) ∪ CE = CDE
+Therefore, we have R1(B,D), R3(A,C,E), and R4(C,D,E)
+
+
+------------------------------------------------
+3b. S(A,B,C,D,E) with functional dependencies A → E, BC → A, DE → B
+
+We see that the closure {A}+ = {A,E}, which is neither {A} nor {A,B,C,D,E}
+So using BCNF Decomposition on S(A, B, C, D, E), we get
+_S1 = AE
+_S2 = (ABCDE - AE) ∪ A = ABCD
+S1 is now fine and A is the key. However, we still have a problem with S2.
+
+We see that the closure {B,C}+ = {A,B,C}, which is neither {B,C} nor {A,B,C,D}
+Using BCNF Decomposition on S2(A,B,C,D), we get:
+_S3 = ABC
+_S4 = (ABCD - ABC) ∪ BC = BCD
+Therefore, we have S1(A, E), S3(A, B, C), and S4(B, C, D)
+
+
+------------------------------------------------
+3c. All subsets of {A, B, C, D} are closed.
+
+A → A
+B → B
+C → C
+D → D
+
+
+------------------------------------------------
+3d. The only closed subsets of {A, B, C, D} are {} and {A, B, C, D}.
+
+A → B
+B → C
+C → D
+D → A
+
+
+------------------------------------------------
+3e. The only closed subsets of {A, B, C, D} are {}, {B, C}, and {A, B, C, D}.
+
+B → C
+C → B
+A → BCD
+D → ABC
