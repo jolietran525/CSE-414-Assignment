@@ -1,0 +1,12 @@
+-- Runtime: 9.16 sec
+
+USE geo;
+
+SELECT  y.`-car_code` AS country_code, y.name AS country_name, 
+                (SELECT m.name AS mountain, m.height AS height
+                FROM x.mondial.mountain m, split(m.`-country`, " ") c_code
+                WHERE c_code = y.`-car_code`) as mountains
+
+FROM geo.world x, x.mondial.country y
+
+ORDER BY array_count(mountains) DESC;

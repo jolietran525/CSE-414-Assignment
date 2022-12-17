@@ -1,0 +1,14 @@
+-- Runtime: 1.382 sec
+
+USE geo;
+
+SELECT DISTINCT y.name AS country_name, y.`-car_code` AS country_code, seas
+
+FROM geo.world x, x.mondial.country y	
+LET seas = (SELECT y1.name as sea
+		FROM geo.world x, x.mondial.country y1, x.mondial.sea s1, split(s1.`-country`, " ") as country
+		WHERE y1.`-car_code` = country AND y = y1)
+
+WHERE array_count(seas) >= 2
+
+ORDER BY array_count(seas) DESC;

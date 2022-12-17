@@ -1,0 +1,21 @@
+-- Runtime: 794.245 sec
+
+USE geo;
+
+SELECT DISTINCT c1.name as first_country, c2.name as second_country
+
+FROM geo.world x,
+               x.mondial.country c1,
+               x.mondial.country c2,
+               x.mondial.mountain m,
+               split(m.`-country`, " ") m1_cc,
+               split(m.`-country`, " ") m2_cc, 
+               x.mondial.sea s,
+               split(s.`-country`, " ") s1_cc,
+               split(s.`-country`, " ") s2_cc
+
+WHERE c1.`-car_code`= m1_cc AND  
+                    c1.`-car_code` = s1_cc AND
+                    c2.`-car_code` = m2_cc AND
+                    c2.`-car_code` = s2_cc AND
+                    c1.`-car_code` < c2.`-car_code;

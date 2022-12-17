@@ -1,0 +1,33 @@
+-- Runtime: 0.79 sec
+
+USE geoindex;
+
+SELECT DISTINCT c1.name AS first_country, c2.name AS second_country, mountains, seas
+
+FROM geoindex.country c1,
+               geoindex.country c2,
+               geoindex.mountain m,
+               split(m.`-country`, " ") m1_cc, 
+               split(m.`-country`, " ") m2_cc,
+               geoindex.sea s,
+               split(s.`-country`, " ") s1_cc,
+               split(s.`-country`, " ") s2_cc
+
+LET mountains = (SELECT mount.name AS mountain
+                 FROM geoindex.mountain mount,
+                      split(mount.`-country`, " ") mount1_cc,
+                      split(mount.`-country`, " ") mount2_cc
+                 WHERE mount1_cc = m1_cc AND
+                       mount2_cc = m2_cc),
+         seas = (SELECT sl.name AS sea
+                 FROM geoindex.sea sl,
+                      split(sl.`-country`, " ") sl1_cc,
+                      split(sl.`-country`, " ") sl2_cc
+                 WHERE sl1_cc = s1_cc AND
+                       sl2_cc = s2_cc)
+
+WHERE c1.`-car_code` = m1_cc AND
+                   c1.`-car_code` = s1_cc AND
+                   c2.`-car_code` = m2_cc AND
+                   c2.`-car_code` = s2_cc AND
+                   c1.`-car_code` < c2.`-car_code`;

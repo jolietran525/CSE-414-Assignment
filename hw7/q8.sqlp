@@ -1,0 +1,19 @@
+-- Runtime: 1.481 sec
+
+USE geo;
+
+SELECT DISTINCT y.name AS country_name, y.`-car_code` AS country_code, float(y.`-area`) AS area
+
+FROM geo.world x, x.mondial.country y	
+
+LET seas = (SELECT y1.name AS sea
+		FROM geo.world x,
+                 x.mondial.country y1,
+                 x.mondial.sea s,
+                 split(s.`-country`, " ") s_cc
+		WHERE y1.`-car_code` = s_cc AND
+                  y = y1)
+
+WHERE array_count(seas) = 0
+
+ORDER BY area DESC;
